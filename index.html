@@ -9,8 +9,8 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            background-color: #002200; /* Fundo verde escuro para cobrir a tela */
-            overflow: hidden; /* Evita rolagem da página inteira */
+            background-color: #1B5E20; /* Fundo verde escuro enquanto carrega */
+            overflow: hidden; /* Trava a rolagem da página */
         }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
@@ -21,7 +21,7 @@
 
         createChat({
             webhookUrl: 'https://n8n.srv1143410.hstgr.cloud/webhook/c4afc957-945a-429b-bcd5-ef8591fa9310',
-            mode: 'fullscreen', // Modo Tela Cheia (Perfeito para Celular/Insta)
+            mode: 'fullscreen', 
             showWelcomeScreen: true,
             initialMessages: [
                 "Opa, seja bem-vindo ao Sabor Nordestino! 🌵☀️",
@@ -31,8 +31,8 @@
                 en: {
                     title: 'Sabor Nordestino 🌵',
                     subtitle: 'O melhor tempero da Bahia!',
-                    footer: '',
-                    getStarted: 'Fazer Pedido',
+                    footer: '', 
+                    getStarted: 'Começar Pedido',
                     inputPlaceholder: 'Digite seu pedido aqui...',
                 },
             },
@@ -42,11 +42,11 @@
                 position: 'absolute',
                 left: '0',
                 top: '0',
-                bgcolor: '#F1F8E9', // Fundo do Chat (Creme)
+                bgcolor: '#F1F8E9', /* Fundo Creme Suave */
                 token: {
-                    color: '#1B5E20', // Cor Principal (Verde Bandeira)
-                    textColor: '#ffffff', // Texto do balão do cliente
-                    avatarColor: '#D4AF37', // Ícone Dourado
+                    color: '#1B5E20', /* Cor Principal: Verde Bandeira */
+                    textColor: '#ffffff', /* Texto Branco */
+                    avatarColor: '#D4AF37', /* Ícone Dourado */
                 }
             }
         });
