@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sabor Nordestino - Pedido Online</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #002200; /* Fundo verde escuro para cobrir a tela */
+            overflow: hidden; /* Evita rolagem da página inteira */
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+</head>
+<body>
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/index.js';
+
+        createChat({
+            webhookUrl: 'https://n8n.srv1143410.hstgr.cloud/webhook/c4afc957-945a-429b-bcd5-ef8591fa9310',
+            mode: 'fullscreen', // Modo Tela Cheia (Perfeito para Celular/Insta)
+            showWelcomeScreen: true,
+            initialMessages: [
+                "Opa, seja bem-vindo ao Sabor Nordestino! 🌵☀️",
+                "Já sabe o que vai pedir ou quer ver o cardápio de hoje?"
+            ],
+            i18n: {
+                en: {
+                    title: 'Sabor Nordestino 🌵',
+                    subtitle: 'O melhor tempero da Bahia!',
+                    footer: '',
+                    getStarted: 'Fazer Pedido',
+                    inputPlaceholder: 'Digite seu pedido aqui...',
+                },
+            },
+            style: {
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                left: '0',
+                top: '0',
+                bgcolor: '#F1F8E9', // Fundo do Chat (Creme)
+                token: {
+                    color: '#1B5E20', // Cor Principal (Verde Bandeira)
+                    textColor: '#ffffff', // Texto do balão do cliente
+                    avatarColor: '#D4AF37', // Ícone Dourado
+                }
+            }
+        });
+    </script>
+</body>
+</html>
