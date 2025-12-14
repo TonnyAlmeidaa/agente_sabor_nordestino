@@ -1,0 +1,75 @@
+{
+  "name": "Enviar Pedido PC",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://nonreasonably-torpid-willard.ngrok-free.dev/pedido",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"cliente\": \"{{ $json.cliente }}\",\n  \"itens\": \"{{ $json.itens }}\",\n  \"endereco\": \"{{ $json.endereco }}\",\n  \"pagamento\": \"{{ $json.pagamento }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        96,
+        16
+      ],
+      "id": "b0283b27-1077-4c66-b626-c23dc092ec6b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "cliente"
+            },
+            {
+              "name": "itens"
+            },
+            {
+              "name": "endereco"
+            },
+            {
+              "name": "pagamento"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -112,
+        16
+      ],
+      "id": "62d89796-ce55-40b7-908c-a76b281d6399",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5e11b1f5-7140-4a33-8ce8-d94c42095d7e",
+  "meta": {
+    "instanceId": "17a1bcbff64c54509a7d62a869b103a09b320f3d86bc0fa4e80ba883b80b9600"
+  },
+  "id": "I3Uvx83NP24pCN81",
+  "tags": []
+}

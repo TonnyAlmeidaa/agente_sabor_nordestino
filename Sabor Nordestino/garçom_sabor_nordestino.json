@@ -1,0 +1,1149 @@
+{
+  "name": "garçom_sabor_nordestino",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1184,
+        -448
+      ],
+      "id": "6d5c1075-376c-434c-b5be-23d8d64d2f75",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "aqxA43INUZ47RvJp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Olá! Seja bem-vindo(a) ao Sabor Nordestino! Qual seu pedido ?",
+        "options": {
+          "subtitle": "Deus abençoe !!!",
+          "title": "Restaurante Sabor Nordestino",
+          "customCss": "/* ATENÇÃO: Adicione a fonte Oswald que você usa no título! */\n@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&family=Oswald:wght@700&display=swap');\n\n:root {\n\t/* Ajuste o tom do Amarelo Ouro (Tertiary) para ser mais laranja/nordestino */\n\t--chat--color-primary: #007B04; /* Verde Escuro/Vibrante */\n\t--chat--color-secondary: #001201; /* Preto Profundo/Verde Quase Preto (Texto) */\n\t--chat--color-tertiary: #FF9900; /* LARANJA/AMARELO VIBRANTE (Mais Nordestino) */\n\t--chat--color-light: #fefcf5; /* Quase Branco */ \n    --chat--radius-large: 16px; \n    --chat--radius-small: 8px;  \n}\n\n/* Tenta arredondar o container principal: Corrigindo o seletor para o main */\n.chat-layout { /* Ajustei para chat-layout */\n    border-radius: var(--chat--radius-large) !important;\n    overflow: hidden; /* Importante para garantir que os cantos arredondados sejam visíveis */\n    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); /* Sombra mais forte */\n}\n\n/* Para garantir que APENAS o título tenha essa fonte super forte */\n.chat-heading h1 {\n    font-family: 'Oswald', sans-serif !important;\n    color: var(--chat--color-tertiary) !important;\n    font-size: 2.8em; /* Ajuste o tamanho para ficar bem visível */\n    font-weight: 700; /* Super negrito */\n    text-transform: uppercase; /* Para ficar ainda mais parecido com a logo */\n}\n\n/* Tenta arredondar o container principal */\n.chat-container {\n    border-radius: var(--chat--radius-small) !important;\n    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); \n}\n\n/* 1. Cabeçalho */\n.chat-header {\n  background-color: var(--chat--color-primary) !important;\n  display: flex; /* Define o container como flexível */\n  flex-direction: column; /* Empilha os filhos verticalmente */\n  align-items: center; /* Centraliza os filhos horizontalmente (chat-heading e p) */\n  text-align: center; /* Garante que o texto dentro de cada filho também esteja centralizado */\n  padding: 20px; /* Adiciona um espaço interno para respirar */\n}\n\n/* 2. TÍTULO PRINCIPAL: Playfair Display */\n.chat-header-title {\n\tfont-family: 'Playfair Display', serif !important;\n\tfont-size: 1.5em; \n\tfont-weight: 700; \n    text-align: center !important;\n}\n\n/* 3. Subtítulo */\n.chat-header-subtitle {\n    color: var(--chat--color-light) !important; /* Amarelo Ouro */\n    font-weight: 600; \n    text-align: left !important;\n}\n\n/* 4. Mensagem do Bot */\n.chat-message-bot {\n\tbackground-color: #FFFFFF !important; \n\tcolor: var(--chat--color-secondary) !important; /* Texto Preto Profundo/Verde Escuro */\n\tborder-left: 5px solid var(--chat--color-primary); /* Borda Verde Vibrante */\n\tborder-radius: 0 var(--chat--radius-large) var(--chat--radius-large) var(--chat--radius-large) !important; \n\tpadding: 12px;\n\tbox-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1); \n}\n\n/* 5. Mensagem do Usuário */\n.chat-message-user {\n\tbackground-color: #F0F0F0 !important; /* Cinza claro neutro */\n\tcolor: #333 !important;\n\tborder-radius: var(--chat--radius-large) 0 var(--chat--radius-large) var(--chat--radius-large) !important; \n\tpadding: 12px;\n}\n\n/* 6. Campo de Digitação e Botão de Envio */\n.chat-input-container {\n    border-top: 1px solid #ccc;\n    background-color: #fff;\n    padding: 10px 15px;\n    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1); \n}\n.chat-input-send-button {\n\tcolor: var(--chat--color-tertiary) !important; /* Ícone Amarelo Ouro */\n    font-size: 2em !important; \n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1440,
+        -2272
+      ],
+      "id": "00ffe229-69ab-4828-8242-39a084363683",
+      "name": "When chat message received",
+      "webhookId": "c4afc957-945a-429b-bcd5-ef8591fa9310"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Você é o atendente virtual do restaurante \"Sabor Nordestino\".\nSua postura é PROFISSIONAL, mas ACOLHEDORA. Fale como um garçom experiente e simpático, não como um robô.\n\nCONTEXTO TEMPORAL:\nHoje é: {{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat('cccc, dd/MM/yyyy, HH:mm') }}\n\n🤖 LÓGICA DE VERIFICAÇÃO (Estoque):\nSempre que o cliente pedir um item, use a ferramenta `consultar_bebidas` (ou estoque) primeiro para ver se temos.\n\nCOMO FALAR SOBRE FALTA DE ITENS:\n❌ NUNCA diga: \"O estoque está zerado\" ou \"Quantidade inválida\".\n✅ DIGA ASSIM: \"Poxa, infelizmente o [Item] acabou por hoje.\" ou \"Estamos sem [Item] no momento.\"\n🚀 AÇÃO IMEDIATA: Se não tiver o item, sugira outro similar na mesma hora.\n   Exemplo: \"A Coca 2L acabou, mas tenho a Coca Lata e o Guaraná 2L geladinhos. Pode ser?\"\n\n⚡ FLUXO DE ATENDIMENTO:\n\n1. CLIENTE QUER SABER O QUE TEM (Cardápio):\n   - Gatilhos: \"Qual o prato do dia?\", \"O que tem hoje?\", \"Manda o cardápio\", \"O que servem?\", \"Tem almoço?\".\n   - Ação: Busque na ferramenta o que está disponível.\n   - Resposta: Liste os PRATOS DO DIA (Destaque o que é especial do dia da semana atual), os pratos fixos e as bebidas. Não mostre itens que estejam com preço zerado ou sem estoque.\n\n2. CLIENTE PEDIU SÓ COMIDA:\n   - Pergunte gentilmente se deseja alguma bebida para acompanhar (Venda Sugestiva).\n   - Se o cliente disser \"não\" ou ignorar, ACEITE imediatamente e prossiga para o fechamento.\n\n3. CLIENTE DEFINIU O PEDIDO (Seja Comida, Bebida ou Ambos):\n   - Verifique o estoque dos itens.\n   - Se tiver estoque, faça a conta somando os itens.\n   - Adicione a Taxa de Entrega (R$ 6,00).\n   - Apresente o resumo:\n     \"Perfeito! Confirmo seu pedido:\n      - 1x [Item A]: R$ XX,XX\n      - 1x [Item B]: R$ YY,YY\n      + Taxa de Entrega: R$ 6,00\n      -------------------------\n      TOTAL: R$ ZZ,ZZ\"\n\n   - IMEDIATAMENTE APÓS O RESUMO, PERGUNTE:\n     \"Para finalizarmos, por favor me informe seu NOME, o ENDEREÇO DE ENTREGA e a forma de PAGAMENTO (Pix, Cartão ou Dinheiro).\"\n\n🛑 PROTOCOLO DE SEGURANÇA (Obrigatório):\nANTES de chamar a ferramenta `finalizar_pedido`, faça a \"Contagem dos 5 Dedos\":\n1. Tenho os ITENS? (Sim/Não)\n2. Tenho o TOTAL? (Sim/Não)\n3. Tenho o ENDEREÇO? (Sim/Não)\n4. Tenho o PAGAMENTO? (Sim/Não)\n5. Tenho o NOME DO CLIENTE? (Sim/Não)\n\n⚠️ REGRA ABSOLUTA:\n- Se faltar QUALQUER UM dos 5 itens acima (especialmente o NOME), você está PROIBIDO de salvar.\n- Em vez de salvar, PERGUNTE o dado que falta.\n- Só chame a ferramenta `finalizar_pedido` quando tiver os 5 dados completos. NUNCA salve parciais.\n\n🚫 PROIBIDO PEDIR CPF: Nunca peça CPF, RG ou e-mail. Peça APENAS: Nome, Endereço e Pagamento.\n\n👋 REGRA DE ABERTURA:\n- Se o cliente disser apenas \"Oi\", \"Olá\":\n  Responda: \"[COPIE A SAUDAÇÃO OBRIGATÓRIA DO PROMPT], seja bem-vindo ao Sabor Nordestino. Em que podemos servi-lo?\"\n\n💰 FORMATO DE PAGAMENTO (Interno):\n- Se o cliente disser \"vou passar o cartão\", você entende, mas na hora de salvar use a ferramenta para formatar como \"💳 Cartão\". O mesmo vale para \"💠 Pix\" e \"💵 Dinheiro\". Nunca peça emojis para o cliente, você é quem coloca.\n\n--- PREÇOS DE REFERÊNCIA (Backup) ---\n- Refrigerante 2L: R$ 15,00\n- Refrigerante Lata: R$ 8,00\n- Água Mineral: R$ 4,00\n- Taxa de Entrega: R$ 6,00"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -1152,
+        -2272
+      ],
+      "id": "101d7b0b-8bc1-471b-8c39-8eaede06243a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1424,
+        -2064
+      ],
+      "id": "c3be361e-b9f2-42f0-a053-c6a08746b9d3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "aqxA43INUZ47RvJp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1296,
+        -2016
+      ],
+      "id": "179e0e32-c194-4622-b321-cc8a219bbad6",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Ferramenta de busca de conhecimento (RAG).\nIMPORTANTE: Você deve fornecer a busca dentro de um campo JSON chamado \"input\".\nExemplo: { \"input\": \"quais são os pratos de hoje?\" }\nUse para saber sobre cardápio, preços e horários.",
+        "tableName": {
+          "__rl": true,
+          "value": "restaurant_knowledge",
+          "mode": "list",
+          "cachedResultName": "restaurant_knowledge"
+        },
+        "topK": 60,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -912,
+        -1616
+      ],
+      "id": "68ed8c5d-0ffe-470b-82e8-648b46adefb5",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "sk2WzUVFslo72Djt",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "restaurant_knowledge",
+        "limit": 100
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        -1184,
+        -1936
+      ],
+      "id": "29107271-dfbf-4591-b306-53c2cae512c8",
+      "name": "Get many rows in Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "sk2WzUVFslo72Djt",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b6364c1e-2802-4ac1-be26-73ebb768318a",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1712,
+        -1472
+      ],
+      "id": "65da4153-ab72-44de-b9eb-ac87bc1641ee",
+      "name": "Set file_id"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1920,
+        -1216
+      ],
+      "id": "63cb26eb-4bf1-4f1a-bc2a-c7ffabe8579e",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "file_id",
+                "value": "={{ $('Set file_id').item.json.file_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -1408,
+        -1040
+      ],
+      "id": "8e1177c1-7dff-41fa-85cf-62ff7aac6985",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "documents",
+        "filterType": "string",
+        "filterString": "=metadata->>file_id=like.*{{ $json.file_id }}*"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1456,
+        -1456
+      ],
+      "id": "4e9d472c-d01b-49e3-b988-bf82fca789f4",
+      "name": "Delete a row",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "sk2WzUVFslo72Djt",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Set file_id').first().json.file_id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain",
+              "slidesToFormat": "application/pdf"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2224,
+        -1216
+      ],
+      "id": "e98c9afc-9afb-45dc-8fa0-63559d2c0256",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "dh2HF03vr2ph1Rq4",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "19ANTDIAU6OwvOle3I4x4ehlxWoncNGIE",
+          "mode": "id"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2368,
+        -1568
+      ],
+      "id": "9f348727-6b74-4935-8d56-b8dbc93b238f",
+      "name": "file Updated",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "dh2HF03vr2ph1Rq4",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "19ANTDIAU6OwvOle3I4x4ehlxWoncNGIE",
+          "mode": "id"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2224,
+        -1440
+      ],
+      "id": "e24a41d0-788e-4cca-8c58-fbb5212e66a7",
+      "name": "file created",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "dh2HF03vr2ph1Rq4",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "892f74f2-d43a-40d6-9d33-80e1dc2af872",
+              "leftValue": "={{ $json.mimeType }}",
+              "rightValue": "application/pdf|text/plain|application/vnd.google-apps.document",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1936,
+        -1456
+      ],
+      "id": "68163b6d-4246-464e-b22e-97845d82adf4",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "restaurant_knowledge",
+          "mode": "list",
+          "cachedResultName": "restaurant_knowledge"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -1616,
+        -1216
+      ],
+      "id": "c5a06f2f-5d36-44dc-af90-39c5a1767a41",
+      "name": "Supabase Vector Store2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "sk2WzUVFslo72Djt",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Append row in sheet in Google Sheets⚠️ ATENÇÃO CRÍTICA:\nUse esta ferramenta SOMENTE UMA VEZ ao final absoluto da transação, quando você JÁ TIVER CONFIRMADO com o cliente: O NOME, o ENDEREÇO e a FORMA DE PAGAMENTO.\n\nÉ obrigatório incluir os seguintes dados como um JSON:\n- customer_name: (string) O nome informado pelo cliente.\n- items_list: (string) A lista completa e resumida dos itens (Ex: \"1 Parmegiana de Carne, 1 Coca-Cola 2L\").\n- final_total: (string) O valor total final da conta, já incluindo a taxa de entrega.\n- delivery_address: (string) O endereço completo fornecido pelo cliente para entrega.\n- payment_method: (string) A forma de pagamento escolhida. SUA TAREFA: Se o cliente disser \"pix\", \"cartão\" ou \"dinheiro\", você DEVE formatar a saída automaticamente para: \"💳 Cartão\", \"💠 Pix\" ou \"💵 Dinheiro\". Nunca peça ao cliente para usar emojis.\n- status: (string) Sempre defina este campo como \"NOVO PEDIDO\".",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y",
+          "mode": "list",
+          "cachedResultName": "Monitor",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "pedidos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "DATA/HORA": "={{ $now.setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy HH:mm:ss') }}",
+            "ITENS DO PEDIDO": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ITENS_DO_PEDIDO', ``, 'string') }}",
+            "VALOR TOTAL": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('VALOR_TOTAL', ``, 'string') }}",
+            "ENDEREÇO": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ENDERE_O', ``, 'string') }}",
+            "PAGAMENTO": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('PAGAMENTO', ``, 'string') }}",
+            "STATUS": "=NOVO PEDIDO",
+            "CLIENTE": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('CLIENTE', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "DATA/HORA",
+              "displayName": "DATA/HORA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "CLIENTE",
+              "displayName": "CLIENTE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ITENS DO PEDIDO",
+              "displayName": "ITENS DO PEDIDO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "VALOR TOTAL",
+              "displayName": "VALOR TOTAL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ENDEREÇO",
+              "displayName": "ENDEREÇO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PAGAMENTO",
+              "displayName": "PAGAMENTO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -1120,
+        -1664
+      ],
+      "id": "c67ad704-3e47-4f44-adea-afcc0d564b4e",
+      "name": "registerOrderSheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rWFrU8KI1XX8Zvcx",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -640,
+        -1360
+      ],
+      "id": "1137723f-3cb9-4afa-a745-f23b40d290cf",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y",
+          "mode": "list",
+          "cachedResultName": "Monitor",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "pedidos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "STATUS",
+              "lookupValue": "NOVO PEDIDO"
+            }
+          ]
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRange"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -432,
+        -1360
+      ],
+      "id": "662e6f8d-693f-48d9-be59-088e431d2739",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rWFrU8KI1XX8Zvcx",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "df169a28-2542-4866-8bd8-b5ec0f9fc03d",
+              "leftValue": "={{ $now.diff(DateTime.fromFormat($json[\"DATA/HORA\"], 'dd/MM/yyyy HH:mm:ss', {zone: 'America/Sao_Paulo'}), 'minutes').minutes }}",
+              "rightValue": 40,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        -1360
+      ],
+      "id": "0ad46473-d219-4b8c-80ac-66f71372d6c3",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y",
+          "mode": "list",
+          "cachedResultName": "Monitor",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "pedidos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "STATUS": "ATRASADO",
+            "row_number": "={{ $json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "DATA/HORA",
+              "displayName": "DATA/HORA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ITENS DO PEDIDO",
+              "displayName": "ITENS DO PEDIDO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "VALOR TOTAL",
+              "displayName": "VALOR TOTAL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ENDEREÇO",
+              "displayName": "ENDEREÇO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PAGAMENTO",
+              "displayName": "PAGAMENTO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        -1376
+      ],
+      "id": "c788ee88-9eaa-48ae-9dbe-996a87e452e8",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rWFrU8KI1XX8Zvcx",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y",
+          "mode": "list",
+          "cachedResultName": "Monitor",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1701649227,
+          "mode": "list",
+          "cachedResultName": "estoque",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit#gid=1701649227"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -976,
+        -1792
+      ],
+      "id": "3e450c9f-6c11-476b-b28c-e5e8436969ec",
+      "name": "consultar_bebidas",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rWFrU8KI1XX8Zvcx",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y",
+          "mode": "list",
+          "cachedResultName": "Monitor",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1701649227,
+          "mode": "list",
+          "cachedResultName": "estoque",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit#gid=1701649227"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -208,
+        -1728
+      ],
+      "id": "67b9cd09-497b-40ef-8806-79a224d5cef8",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rWFrU8KI1XX8Zvcx",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y",
+          "mode": "list",
+          "cachedResultName": "Monitor",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1701649227,
+          "mode": "list",
+          "cachedResultName": "estoque",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JJouIhWfx49Em9Qjq7YzSSQghLkbkUmlxLL0GPju1-Y/edit#gid=1701649227"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        -1728
+      ],
+      "id": "13c386de-c5a0-443d-be41-8b9fca8eaf70",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "kQbmPIF0EjpBxhT7",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Use esta ferramenta APENAS quando o cliente confirmar o pedido com Nome, Endereço e Pagamento. Ela finaliza a venda e envia para a cozinha.",
+        "workflowId": {
+          "__rl": true,
+          "value": "I3Uvx83NP24pCN81",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/I3Uvx83NP24pCN81",
+          "cachedResultName": "Enviar Pedido PC"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "cliente": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('cliente', ``, 'string') }}",
+            "itens": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('itens', ``, 'string') }}",
+            "endereco": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('endereco', ``, 'string') }}",
+            "pagamento": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('pagamento', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "cliente",
+              "displayName": "cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "itens",
+              "displayName": "itens",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "endereco",
+              "displayName": "endereco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "pagamento",
+              "displayName": "pagamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -688,
+        -1904
+      ],
+      "id": "3f87b4ed-84f8-4ec1-a567-bd9e5aecd49a",
+      "name": "finalizar_pedido"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Supabase Vector Store2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows in Supabase": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set file_id": {
+      "main": [
+        [
+          {
+            "node": "Delete a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store2",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a row": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "file Updated": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "file created": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Set file_id",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "registerOrderSheet": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consultar_bebidas": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "finalizar_pedido": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2cd063ce-4339-40cf-a25e-3ee304ee331b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "17a1bcbff64c54509a7d62a869b103a09b320f3d86bc0fa4e80ba883b80b9600"
+  },
+  "id": "M9KYrUcMbfY9VJs6",
+  "tags": []
+}
